@@ -17,9 +17,9 @@ import:
     timid: no
 
     resume: ask
-    incremental: no
+    incremental: yes
     none_rec_action: ask
-    log:
+    log: ~/.config/beets/import.log
 
     quiet: no  # enable with command line option
     quiet_fallback: skip
@@ -41,17 +41,20 @@ per_disc_numbering: no
 clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg", "*.m3u", "*.nfo"]
 
 # files/directories matching one of these patterns are ignored during import
-ignore: [".*", "*~", "System Volume Information"]
+ignore: ["*~", "System Volume Information", "lost+found"]
+ignore_hidden: yes
 
 
 # Paths ----------------------------------------------------------------------
 
 # Paths and filenames for music files
 # relative to music directory
+asciify_paths: yes
+
 paths:
-    default: %asciify{$albumartist}/%asciify{$album}%aunique{}/$track - %asciify{$albumartist} - %asciify{$title}
-    singleton: Non-Album/%asciify{$artist}/%asciify{$title}
-    comp: Compilations/%asciify{$album}%aunique{}/$track %asciify{$title}
+    default: $albumartist/$album%aunique{}/$track - $albumartist - $title
+    singleton: Non-Album/$artist/$title
+    comp: Compilations/$album%aunique{}/$track $title
 
 # replace special characters in generated filenames
 replace:
@@ -81,8 +84,8 @@ verbose: no
 # User Interface -------------------------------------------------------------
 
 color: yes
-list_format_item: %upper{$artist} - $album - $track. $title
-list_format_album: %upper{$albumartist} - $album
+format_item: %upper{$artist} - $album - $track. $title
+format_album: %upper{$albumartist} - $album
 time_format: '%Y-%m-%d %H:%M:%S'
 terminal_encoding: utf8
 
@@ -151,9 +154,6 @@ lyrics:
     auto: yes
     fallback: ''
 
-echonest_tempo:
-    auto: yes
-
 lastgenre:
     fallback: ''
     source: artist
@@ -168,11 +168,6 @@ embedart:
     auto: yes
     maxwidth: 300
 
-replaygain:
-    auto: yes
-    overwrite: yes
-    albumgain: yes
-
 scrub:
     auto: yes
 
@@ -183,3 +178,4 @@ missing:
 
 duplicates:
     checksum: no  # expensive
+    action: ask
